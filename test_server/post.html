@@ -1,0 +1,31 @@
+<html lang="pt-br">
+<head>
+    <title>teste de post</title>
+    <script src="jquery/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+    <script lang="javascript">
+        $(document).ready(function() {
+
+            var data = {bufferLevel: 0,
+                            reportedBitrate: 1,
+                            calculatedBitrate: 2,
+                            droppedFPS:3,
+                            index:4,
+                            maxIndex:5,
+                            latency:6,
+                            download:7,
+                            video_ratio:8
+                        };
+            $("#gravar").click(function(){
+                $("#msg").text("clicou");
+                $.post('http://dash.winet.dcc.ufmg.br:8080/', data, function(d, status) {
+                    $("#msg").text(d);
+                }, 'json');
+            });
+        });
+    </script>
+    <input type="button" id="gravar" value="Submeter o post" />
+    <span id="msg"></span>
+</body>
+</html>
