@@ -8,19 +8,19 @@
         $(document).ready(function() {
 
             var data = {bufferLevel: 0,
-                            reportedBitrate: 1,
-                            calculatedBitrate: 2,
-                            droppedFPS:3,
-                            index:4,
-                            maxIndex:5,
-                            latency:6,
-                            download:7,
-                            video_ratio:8
+                        reportedBitrate: 1,
+                        calculatedBitrate: 2,
+                        droppedFPS:3,
+                        index:4,
+                        maxIndex:5,
+                        latency:6,
+                        download:7,
+                        video_ratio:8
                         };
             $("#gravar").click(function(){
                 $("#msg").text("clicou");
-                $.post('http://dash.winet.dcc.ufmg.br:8080/', data, function(d, status) {
-                    $("#msg").text(d);
+                $.post('http://localhost:8080/', data, function(d, status) {
+                    $("#msg").text("enviou");
                 }, 'json');
             });
         });
