@@ -1,22 +1,62 @@
+//
+//
+// load modules
+//
+//
 var express = require('express');
 var app = express();
 const fs = require('fs');
 const utils = require('./scripts/utils.js');
 
+var os = require('os');
+var interfaces = os.networkInterfaces();
+
 var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
-const port = 8080; // server listen to port
-const filename = 'save.db';
-const verbose = false;
+//
+// program parameters
+//
+//
+const port = 8080;          // server listen to port
+const filename = 'save.db'; // filename (log) where data will be written
+const verbose = false;      // if verbose=true, print results to the console
+const get_local_ip = true;  // if should insert the local interface data in the log
 
-const get_local_ip = true;
+
 
 app.get('/', function(request, response){
   response.send('Use POST to send data to the server');
 });
 
+
+function addInterfaces() {
+  var data = ""
+  Object.keys(interfaces).forEach(function (ifname) {
+    var alias = 0;
+    interfaces[ifname].forEach(function (iface) {
+      // skip internal interface (loopback) and non IP version 4
+      if ('IPv4' != iface.family || iface.internal == true) {
+        return;
+      }
+      // this single interface has multiple ipv4 addresses
+      if (alias >= 1) {
+        // console.log(ifname + ':' + alias, iface.address);
+        data = data + ";" + ifname + "[" + alias +"]:" + iface.address;
+      } else {
+        // console.log(ifname, iface.address); 
+        // this interface has only one ipv4 adress
+        data = data + ";" + ifname + ":" + iface.address;
+      }
+      ++alias;
+    });
+  });
+  if (data.length > 0) {
+    data = data.substr(1);  // remove first ";"
+  }
+  return data;
+}
 
 // servidor para receber o post em 8080
 app.post('/', function(request, response){
@@ -33,22 +73,12 @@ app.post('/', function(request, response){
   data['proxy'] = v[1];
   data['client-agent'] = v[2];
   data['timestamp'] = date;
+  data['iface'] = "";
+  if (get_local_ip) {
+    data['iface'] = addInterfaces();
+  }
   utils.append(filename, JSON.stringify(data), sep='\n');
 
-  if (get_local_ip) {
-    var os = require('os');
-    var interfaces = os.networkInterfaces();
-    
-   Object.keys(interfaces).forEach(function (ifname) {
-     var alias = 0;
-     interfaces[ifname].forEach(function (iface) {
-       // skip internal interface (loopback) and non IP version 4
-       if ('IPv4' != iface.family || iface.internal == true) {
-         return;
-       }
-     });
-   });
-  }
 
   console.log(request.body);
 
@@ -68,6 +98,8 @@ app.post('/', function(request, response){
     console.log("latency          :" + request.body.latency);
     console.log("download         :" + request.body.download);
     console.log("video_ratio      :" + request.body.video_ratio);
+    console.log("iface            :" + data['iface']);
+    console.log("playing          :" + request.body.playing);
   };
 
   // ---------------------------------------------------------
@@ -86,7 +118,8 @@ app.post('/', function(request, response){
   response.setHeader('Access-Control-Allow-Credentials', true);
   // ---------------------------------------------------------
 
-  response.send(JSON.stringify({status:'ok', user: v[0]}));
+  // response.send(JSON.stringify({status:'ok', data: data}));
+  response.send(JSON.stringify({status:'ok'}));
 });
 
 console.log('Starting server @'+port)
