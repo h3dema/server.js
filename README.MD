@@ -12,6 +12,7 @@ sudo apt-get -y install nodejs npm
 Tendo instalado, para executar o servidor
 
 ```
+cd server
 nodejs server.js &
 ```
 
@@ -25,7 +26,7 @@ $ netstat -atn | grep 8080
 tcp6       0      0 :::8080                 :::*                    LISTEN
 ```
 
-Abra no navegador o arquivo "post.html". Clique o botão que aparece e verifique se uma nova linha foi gravada no arquivo "save.db".
+Abra no navegador o arquivo "test_connection.html". Clique o botão que aparece e verifique se uma nova linha foi gravada no arquivo "save.db".
 
 ## Arquivo de dados
 
