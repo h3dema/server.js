@@ -11,6 +11,13 @@ const port = 8080; // server listen to port
 const filename = 'save.db';
 const verbose = false;
 
+const get_local_ip = true;
+
+app.get('/', function(request, response){
+  response.send('Use POST to send data to the server');
+});
+
+
 // servidor para receber o post em 8080
 app.post('/', function(request, response){
 
@@ -27,6 +34,21 @@ app.post('/', function(request, response){
   data['client-agent'] = v[2];
   data['timestamp'] = date;
   utils.append(filename, JSON.stringify(data), sep='\n');
+
+  if (get_local_ip) {
+    var os = require('os');
+    var interfaces = os.networkInterfaces();
+    
+   Object.keys(interfaces).forEach(function (ifname) {
+     var alias = 0;
+     interfaces[ifname].forEach(function (iface) {
+       // skip internal interface (loopback) and non IP version 4
+       if ('IPv4' != iface.family || iface.internal == true) {
+         return;
+       }
+     });
+   });
+  }
 
   console.log(request.body);
 
@@ -67,4 +89,5 @@ app.post('/', function(request, response){
   response.send(JSON.stringify({status:'ok', user: v[0]}));
 });
 
+console.log('Starting server @'+port)
 app.listen(port)
