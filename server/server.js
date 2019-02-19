@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 // program parameters
 //
 //
-const port = 8080;               // server listen to port
+const port = 58080;               // server listen to port
 const filename = '/tmp/save.db'; // filename (log) where data will be written
 const verbose = false;           // if verbose=true, print results to the console
 const get_local_ip = true;       // if should insert the local interface data in the log
