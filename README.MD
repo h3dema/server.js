@@ -9,12 +9,6 @@ A instalação no Ubuntu é simples, chame
 sudo apt-get -y install nodejs npm
 ```
 
-Tendo instalado, para executar o servidor
-
-```
-cd server
-nodejs server.js &
-```
 
 ### Testando o servidor
 
