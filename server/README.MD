@@ -21,7 +21,9 @@ npm install express
 
 ## Troubleshooting
 
-When you are trying to install the npm packages, you may encouter an error "npm ERR! Error: CERT_UNTRUSTED".
+### CERT_UNTRUSTED
+
+When you are trying to install the npm packages, you may encouter an error __"npm ERR! Error: CERT_UNTRUSTED"__.
 This happened to me when I was using it in a Ubuntu v.14.
 It occurs because the npm package is outdated, thus you have to install a newer version, using the following commands:
 
@@ -32,6 +34,19 @@ sudo apt-get install nodejs -y
 ```
 
 After that, just reissue the `npm install` commands.
+
+
+### body-parser
+
+When you are trying to run the server, you may receive an error __Error: Cannot find module 'body-parser'__.
+Just (re)install the missing library using
+
+```bash
+cd server.js/server
+npm install body-parser
+```
+
+It should be fixed, thus just re-run the nodejs.
 
 
 # Running
