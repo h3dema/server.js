@@ -9,6 +9,8 @@ A instalação no Ubuntu é simples, chame
 sudo apt-get -y install nodejs npm
 ```
 
+Clone this repository in your computer. Go to the `server.js` folder, created by the git clone command, and follow the instructions in [the server README](https://github.com/h3dema/server.js/blob/master/server/README.MD) to install the dependencies.
+
 
 ### Testando o servidor
 
