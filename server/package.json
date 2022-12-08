@@ -4,7 +4,7 @@
   "description": "server to run in QoE experiment with DASH",
   "main": "server.js",
   "dependencies": {
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "os": "^0.1.1"
   },
   "devDependencies": {},
